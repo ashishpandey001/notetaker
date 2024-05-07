@@ -10,7 +10,30 @@ export class ApiStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props: ApiStackProps) {
     super(scope, id, props);
 
-    this.noteTakerApi = new cdk.aws_apigatewayv2.HttpApi(this, 'NoteTakerApi');
+    const apiSecret = new cdk.aws_secretsmanager.Secret(this, 'APIKeySecret', {
+      generateSecretString: {
+        excludePunctuation: true,
+      },
+    });
+
+    const authFn = new cdk.aws_lambda_nodejs.NodejsFunction(this, 'AuthFn', {
+      entry: 'src/functions/authorizers/lambda-auth.ts',
+      handler: 'handler',
+      environment: {
+        API_KEY_SECRET_NAME: apiSecret.secretName,
+      },
+    });
+
+    apiSecret.grantRead(authFn);
+
+    const authorizer = new cdk.aws_apigatewayv2_authorizers.HttpLambdaAuthorizer('NoteTakerAuthorizer', authFn, {
+      responseTypes: [cdk.aws_apigatewayv2_authorizers.HttpLambdaResponseType.SIMPLE],
+      resultsCacheTtl: cdk.Duration.seconds(0),
+    });
+
+    this.noteTakerApi = new cdk.aws_apigatewayv2.HttpApi(this, 'NoteTakerApi', {
+      defaultAuthorizer: authorizer,
+    });
 
     const listNotesFn = new cdk.aws_lambda_nodejs.NodejsFunction(this, 'ListNotesFn', {
       entry: 'src/functions/list-notes.ts',
@@ -100,6 +123,10 @@ export class ApiStack extends cdk.Stack {
 
     new cdk.CfnOutput(this, 'ApiEndpoint', {
       value: this.noteTakerApi.url!,
+    });
+
+    new cdk.CfnOutput(this, 'ApiKeySecretId', {
+      value: apiSecret.secretName,
     });
   }
 }
