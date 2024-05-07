@@ -24,3 +24,5 @@ Here's a [sample endpoint](https://v5lonzrode.execute-api.ap-south-1.amazonaws.c
 
 ## OpenAPI spec for the API
 Current spec is [here](https://github.com/ashishpandey001/notetaker/blob/main/notetaker-api.paw.json)
+
+Please reach out for the API key.
