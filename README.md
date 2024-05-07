@@ -21,3 +21,6 @@ This will deploy the cloudformation stacks to the appropriate account and region
 
 ## Sample endpoint
 Here's a [sample endpoint](https://v5lonzrode.execute-api.ap-south-1.amazonaws.com/) where this application is currently active.
+
+## OpenAPI spec for the API
+Current spec is [here](https://github.com/ashishpandey001/notetaker/blob/main/notetaker-api.paw.json)
