@@ -1,0 +1,134 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "notetaker-api.paw",
+    "version": "v0.0.0"
+  },
+  "host": "v5lonzrode.execute-api.ap-south-1.amazonaws.com",
+  "schemes": [
+    "https"
+  ],
+  "basePath": "/notes",
+  "paths": {
+    "/": {
+      "post": {
+        "summary": "create a note",
+        "description": "API route to create a note. Requires title and description.",
+        "operationId": "35375b1b-9cfc-4b47-bbfd-f19364617ffc",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "{\"title\":\"the eight note\",\"description\":\"some data about the note\"}"
+            },
+            "in": "body",
+            "name": "body"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "no response description was provided for this operation"
+          }
+        }
+      },
+      "get": {
+        "summary": "list all notes",
+        "description": "API route to list all notes. Paginatable route that supports cursor based pagination and limits number of notes listed based on the cursor and limit query params",
+        "operationId": "915ec98f-675b-4358-b7e6-2fd4be4bf011",
+        "parameters": [
+          {
+            "type": "string",
+            "default": "",
+            "name": "cursor",
+            "required": false,
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "no response description was provided for this operation"
+          }
+        }
+      }
+    },
+    "/{noteId}": {
+      "get": {
+        "summary": "get a note",
+        "description": "API route to get a note. Returns noteId, title, description and meta timestamps.",
+        "operationId": "1dff298a-b1f0-416b-9111-d4e2984d2c4a",
+        "responses": {
+          "default": {
+            "description": "no response description was provided for this operation"
+          }
+        },
+        "parameters": [
+          {
+            "type": "string",
+            "default": "01HX88D97344NGACN8V5CD6HQV",
+            "name": "noteId",
+            "description": "The noteId whose data needs to be returned",
+            "required": true,
+            "in": "path"
+          }
+        ]
+      },
+      "put": {
+        "summary": "update a note",
+        "description": "API route to update a note's title and/or description based on the noteId. Returns the updated note data.",
+        "operationId": "5df822cc-e712-40f4-b556-ddc9685676d7",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "{\"title\":\"some updated title\",\"description\":\"another description\"}"
+            },
+            "in": "body",
+            "name": "body"
+          },
+          {
+            "type": "string",
+            "default": "01HX8VX8GBEARPZDJRKATZY9AF",
+            "name": "noteId",
+            "description": "The noteId whose data needs to be returned",
+            "required": true,
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "no response description was provided for this operation"
+          }
+        }
+      },
+      "delete": {
+        "summary": "delete a note",
+        "description": "API route to delete a note based on the noteId. Returns the deleted note data.",
+        "operationId": "f8ccfdec-b589-4a07-a2e6-b8f8cb66aff2",
+        "responses": {
+          "default": {
+            "description": "no response description was provided for this operation"
+          }
+        },
+        "parameters": [
+          {
+            "type": "string",
+            "default": "01HX88M416KE2K45TZYY9YJ9AD",
+            "name": "noteId",
+            "description": "The noteId whose data needs to be returned",
+            "required": true,
+            "in": "path"
+          }
+        ]
+      }
+    }
+  },
+  "tags": []
+}
