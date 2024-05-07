@@ -26,3 +26,14 @@ Here's a [sample endpoint](https://v5lonzrode.execute-api.ap-south-1.amazonaws.c
 Current spec is [here](https://github.com/ashishpandey001/notetaker/blob/main/notetaker-api.paw.json)
 
 Please reach out for the API key.
+
+## Architecture
+The API application is built using AWS services such as API Gateway V2, DynamoDB, Lambda and Secerts Manager.
+
+The implementation follows the least privilege principle and incrementally grants each service the privilege that it needs to perform its role.
+
+Some examples of this are:
+- Authorization header is mandatory to invoke any Lambda function via the API route. Without the header, the gateway itself rejects the request and prevents proxying it to the respective Lambda function.
+- Each API route is separately proxied to a single Lambda function and can't trigger any other Lambda functions.
+- Each Lambda function can access the DynamoDB table for read/write operations only. The iam role available to these Lambda functions can't perform any other DynamoDB control plane operations such as adding/removing indexes, adding/removing replicas, etc.
+- Finally, the Authoriztion header check is also separate from all other Lambda Functions and cannot be hijacked due to the other Lambda function's having no access to the secrets manager secret.
