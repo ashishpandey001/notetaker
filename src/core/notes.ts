@@ -1,13 +1,16 @@
 import { ulid } from 'ulid';
 import { noteTakerService } from '../db';
 import createError from 'http-errors';
+import { EntityItem } from 'electrodb';
 
-export async function listNotes({ limit, cursor: existingCursor }: { limit?: number; cursor?: string }) {
+export async function listNotes({ limit, cursor: existingCursor }: { limit?: number; cursor?: string }): Promise<{
+  data: EntityItem<typeof noteTakerService.entities.note>[];
+  cursor?: string;
+}> {
   const { cursor, data } = await noteTakerService.entities.note.query.byEntity({}).go({
     ...(limit && { limit }),
     ...(existingCursor && { cursor: existingCursor }),
   });
-  console.log({ cursor });
   return { data, ...(cursor && { cursor }) };
 }
 

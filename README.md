@@ -37,3 +37,11 @@ Some examples of this are:
 - Each API route is separately proxied to a single Lambda function and can't trigger any other Lambda functions.
 - Each Lambda function can access the DynamoDB table for read/write operations only. The iam role available to these Lambda functions can't perform any other DynamoDB control plane operations such as adding/removing indexes, adding/removing replicas, etc.
 - Finally, the Authoriztion header check is also separate from all other Lambda Functions and cannot be hijacked due to the other Lambda function's having no access to the secrets manager secret.
+
+## Local E2E Tests on already deployed API
+To perform local E2E tests, pass the env variables to `npm run test` as follows:
+```
+TEST_API_ENDPOINT='some api host' TEST_API_KEY='some api key' npm run test
+```
+
+This will run the test suite with the already deployed API endpoint.
